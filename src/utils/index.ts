@@ -20,7 +20,7 @@ import {
 } from "./Utils.ts";
 
 import Address from "./Address.ts";
-const AdnlAddress = require("./AdnlAddress").default;
+import AdnlAddress from "./AdnlAddress.ts";
 const StorageBagId = require("./StorageBagId").default;
 
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG
