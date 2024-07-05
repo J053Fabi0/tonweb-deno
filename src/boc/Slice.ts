@@ -128,9 +128,9 @@ export default class Slice {
     return new Address(wc + ":" + bytesToHex(hashPart));
   }
 
-  loadRef(): Slice {
+  loadRef(): Slice | undefined {
     if (this.refCursor >= 4) throw new Error("refs overflow");
-    const result = this.refs[this.refCursor];
+    const result = this.refs.at(this.refCursor);
     this.refCursor++;
     return result;
   }
