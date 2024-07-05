@@ -1,5 +1,5 @@
-import { BN } from "bn";
 import Address from "./Address.ts";
+import { BN } from "https://deno.land/x/bn_deno@1.0.0/lib/bn.js";
 
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG?amount=1000000000

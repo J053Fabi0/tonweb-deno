@@ -1,4 +1,4 @@
-import { BN } from "bn";
+import { BN } from "https://deno.land/x/bn_deno@1.0.0/lib/bn.js";
 import type Address from "../utils/Address.ts";
 import { bytesToHex } from "../utils/Utils.ts";
 

@@ -1,6 +1,6 @@
-import { BN } from "bn";
 import Cell from "../boc/Cell.ts";
 import { base64ToBytes } from "../utils/Utils.ts";
+import { BN } from "https://deno.land/x/bn_deno@1.0.0/lib/bn.js";
 
 export interface ErrorWithResult extends Error {
   result: unknown;

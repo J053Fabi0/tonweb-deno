@@ -1,5 +1,5 @@
-import nacl from "tweetnacl";
-import { Buffer } from "buffer";
+import nacl from "npm:tweetnacl@^1.0.3";
+import { Buffer } from "https://deno.land/x/node_buffer@1.1.0/mod.ts";
 
 export function sha256(bytes: BufferSource): Promise<ArrayBuffer> {
   return crypto.subtle.digest("SHA-256", bytes);

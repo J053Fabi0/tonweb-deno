@@ -1,9 +1,9 @@
-import { BN } from "bn";
 import Cell from "../boc/Cell.ts";
 import Address from "../utils/Address.ts";
-import HttpProvider from "../providers/index.ts";
+import type HttpProvider from "../providers/index.ts";
 import { bytesToBase64, bytesToHex } from "../utils/Utils.ts";
-import HttpProviderUtils from "../providers/HttpProviderUtils.ts";
+import { BN } from "https://deno.land/x/bn_deno@1.0.0/lib/bn.js";
+import type HttpProviderUtils from "../providers/HttpProviderUtils.ts";
 
 interface ContractOptions {
   code?: Cell;
