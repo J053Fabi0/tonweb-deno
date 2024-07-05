@@ -1,7 +1,7 @@
-import { BN } from "bn";
 import nacl from "tweetnacl";
+import { Buffer } from "buffer";
 
-function sha256(bytes: BufferSource): Promise<ArrayBuffer> {
+export function sha256(bytes: BufferSource): Promise<ArrayBuffer> {
   return crypto.subtle.digest("SHA-256", bytes);
 }
 
@@ -16,7 +16,7 @@ for (let ord = 0; ord <= 0xff; ord++) {
 }
 
 /** converter using lookups */
-function bytesToHex(buffer: Uint8Array): string {
+export function bytesToHex(buffer: Uint8Array): string {
   let hex = "";
   const { byteLength } = buffer;
   for (let i = 0; i < byteLength; i++) hex += to_hex_array[buffer[i]];
@@ -24,7 +24,7 @@ function bytesToHex(buffer: Uint8Array): string {
 }
 
 /** reverse conversion using lookups */
-function hexToBytes(s: string): Uint8Array {
+export function hexToBytes(s: string): Uint8Array {
   s = s.toLowerCase();
   const length2 = s.length;
   if (length2 % 2 !== 0) {
@@ -41,7 +41,7 @@ function hexToBytes(s: string): Uint8Array {
   return result;
 }
 
-function stringToBytes(str: string, size = 1): Uint8Array {
+export function stringToBytes(str: string, size = 1): Uint8Array {
   let bufView: Uint8Array | Uint16Array | Uint32Array;
   switch (size) {
     case 1:
@@ -61,13 +61,8 @@ function stringToBytes(str: string, size = 1): Uint8Array {
   return new Uint8Array(bufView.buffer);
 }
 
-/**
- * @private
- * @param crc {number}
- * @param bytes {Uint8Array}
- * @return {number}
- */
-function _crc32c(crc, bytes) {
+/** @private */
+function _crc32c(crc: number, bytes: Uint8Array): number {
   const POLY = 0x82f63b78;
 
   crc ^= 0xffffffff;
@@ -85,11 +80,7 @@ function _crc32c(crc, bytes) {
   return crc ^ 0xffffffff;
 }
 
-/**
- * @param bytes {Uint8Array}
- * @return {Uint8Array}
- */
-function crc32c(bytes) {
+export function crc32c(bytes: Uint8Array): Uint8Array {
   //Version suitable for crc32-c of BOC
   const int_crc = _crc32c(0, bytes);
   const arr = new ArrayBuffer(4);
@@ -98,16 +89,12 @@ function crc32c(bytes) {
   return new Uint8Array(arr).reverse();
 }
 
-/**
- * @param data  {ArrayLike<number>}
- * @return {Uint8Array}
- */
-function crc16(data) {
+export function crc16(data: ArrayLike<number>): Uint8Array {
   const poly = 0x1021;
   let reg = 0;
   const message = new Uint8Array(data.length + 2);
   message.set(data);
-  for (let byte of message) {
+  for (const byte of message) {
     let mask = 0x80;
     while (mask > 0) {
       reg <<= 1;
@@ -124,24 +111,14 @@ function crc16(data) {
   return new Uint8Array([Math.floor(reg / 256), reg % 256]);
 }
 
-/**
- * @param a {Uint8Array}
- * @param b {Uint8Array}
- * @return {Uint8Array}
- */
-function concatBytes(a, b) {
+export function concatBytes(a: Uint8Array, b: Uint8Array): Uint8Array {
   const c = new Uint8Array(a.length + b.length);
   c.set(a);
   c.set(b, a.length);
   return c;
 }
 
-/**
- * @param a {Uint8Array}
- * @param b {Uint8Array}
- * @return {boolean}
- */
-function compareBytes(a, b) {
+export function compareBytes(a: Uint8Array, b: Uint8Array): boolean {
   // TODO Make it smarter
   return a.toString() === b.toString();
 }
@@ -165,11 +142,7 @@ const base64abc = (() => {
   return abc;
 })();
 
-/**
- * @param bytes {Uint8Array}
- * @return {string}
- */
-function bytesToBase64(bytes) {
+export function bytesToBase64(bytes: Uint8Array): string {
   let result = "";
   let i;
   const l = bytes.length;
@@ -196,7 +169,7 @@ function bytesToBase64(bytes) {
 }
 
 // todo: base64 decoding process could ignore one extra character at the end of string and the byte-length check below won't be able to catch it.
-function base64toString(base64) {
+export function base64toString(base64: string): string {
   if (typeof self === "undefined") {
     return Buffer.from(base64, "base64").toString("binary"); // todo: (tolya-yanot) Buffer silently ignore incorrect base64 symbols, we need to throw error
   } else {
@@ -204,7 +177,7 @@ function base64toString(base64) {
   }
 }
 
-function stringToBase64(s) {
+export function stringToBase64(s: string): string {
   if (typeof self === "undefined") {
     return Buffer.from(s, "binary").toString("base64"); // todo: (tolya-yanot) Buffer silently ignore incorrect base64 symbols, we need to throw error
   } else {
@@ -212,11 +185,7 @@ function stringToBase64(s) {
   }
 }
 
-/**
- * @param base64  {string}
- * @return {Uint8Array}
- */
-function base64ToBytes(base64) {
+export function base64ToBytes(base64: string): Uint8Array {
   const binary_string = base64toString(base64);
   const len = binary_string.length;
   const bytes = new Uint8Array(len);
@@ -226,12 +195,7 @@ function base64ToBytes(base64) {
   return bytes;
 }
 
-/**
- * @param n  {number}
- * @param ui8array  {Uint8Array}
- * @return {number}
- */
-function readNBytesUIntFromArray(n, ui8array) {
+export function readNBytesUIntFromArray(n: number, ui8array: Uint8Array): number {
   let res = 0;
   for (let c = 0; c < n; c++) {
     res *= 256;
@@ -240,47 +204,14 @@ function readNBytesUIntFromArray(n, ui8array) {
   return res;
 }
 
-/**
- * @param seed  {Uint8Array}
- * @returns {nacl.SignKeyPair}
- */
-function keyPairFromSeed(seed) {
+export function keyPairFromSeed(seed: Uint8Array) {
   return nacl.sign.keyPair.fromSeed(seed);
 }
 
-/**
- * @returns {nacl.SignKeyPair}
- */
-function newKeyPair() {
+export function newKeyPair() {
   return nacl.sign.keyPair();
 }
 
-/**
- * @returns {Uint8Array}
- */
-function newSeed() {
+export function newSeed() {
   return nacl.sign.keyPair().secretKey.slice(0, 32);
 }
-
-module.exports = {
-  BN,
-  nacl,
-  sha256,
-  fromNano,
-  toNano,
-  bytesToHex,
-  hexToBytes,
-  stringToBytes,
-  crc32c,
-  crc16,
-  concatBytes,
-  bytesToBase64,
-  base64ToBytes,
-  base64toString,
-  stringToBase64,
-  compareBytes,
-  readNBytesUIntFromArray,
-  keyPairFromSeed,
-  newKeyPair,
-  newSeed,
-};
