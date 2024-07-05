@@ -17,7 +17,7 @@ export default class HttpProvider {
   options: { apiKey?: string };
   static SHARD_ID_ALL: string;
 
-  constructor(host: string, options: { apiKey?: string }) {
+  constructor(host?: string, options?: { apiKey?: string }) {
     this.host = host || "https://toncenter.com/api/v2/jsonRPC";
     this.options = options || {};
   }
@@ -70,7 +70,7 @@ export default class HttpProvider {
   getTransactions(
     address: string,
     limit: number | string = 20,
-    lt = undefined,
+    lt?: number,
     hash?: string,
     to_lt?: number | string,
     archival?: boolean
@@ -81,8 +81,8 @@ export default class HttpProvider {
   /**
    * Use this method to get balance (in nanograms) of a given address.
    */
-  getBalance(address: string) {
-    return this.send("getAddressBalance", { address: address });
+  getBalance(address: string): Promise<string> {
+    return this.send("getAddressBalance", { address: address }) as Promise<string>;
   }
 
   /**
