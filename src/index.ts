@@ -7,49 +7,48 @@ import * as utils from "./utils/index.ts";
 import BitString from "./boc/BitString.ts";
 import HttpProvider from "./providers/index.ts";
 
-const AppTon = require("./ledger/AppTon");
-const { Contract } = require("./contract");
-const NFT = require("./contract/token/nft").default;
-const Wallets = require("./contract/wallet").default;
-const JETTON = require("./contract/token/ft").default;
-const LockupWallets = require("./contract/lockup").default;
-const HighloadWallets = require("./contract/highloadWallet").default;
-const TransportWebUSB = require("@ledgerhq/hw-transport-webusb").default;
-const TransportWebHID = require("@ledgerhq/hw-transport-webhid").default;
-const { SubscriptionContract } = require("./contract/subscription/index");
-const { Payments, PaymentChannel } = require("./contract/payments/index");
-const { Dns, DnsCollection, DnsItem } = require("./contract/dns").default;
-const BluetoothTransport = require("@ledgerhq/hw-transport-web-ble").default;
-const { BlockSubscription, InMemoryBlockStorage } = require("./providers/blockSubscription");
+// const { Contract } = require("./contract");
+// const NFT = require("./contract/token/nft").default;
+// const Wallets = require("./contract/wallet").default;
+// const JETTON = require("./contract/token/ft").default;
+// const LockupWallets = require("./contract/lockup").default;
+// const HighloadWallets = require("./contract/highloadWallet").default;
+// const TransportWebUSB = require("@ledgerhq/hw-transport-webusb").default;
+// const TransportWebHID = require("@ledgerhq/hw-transport-webhid").default;
+// const { SubscriptionContract } = require("./contract/subscription/index");
+// const { Payments, PaymentChannel } = require("./contract/payments/index");
+// const { Dns, DnsCollection, DnsItem } = require("./contract/dns").default;
+// const BluetoothTransport = require("@ledgerhq/hw-transport-web-ble").default;
+// const { BlockSubscription, InMemoryBlockStorage } = require("./providers/blockSubscription");
 
 class TonWeb {
   version: string;
   utils: typeof utils;
   Address: typeof Address;
   boc: { Slice: typeof Slice; Cell: typeof Cell; BitString: typeof BitString };
-  Contract: typeof Contract;
-  BlockSubscription: typeof BlockSubscription;
-  InMemoryBlockStorage: typeof InMemoryBlockStorage;
+  // Contract: typeof Contract;
+  // BlockSubscription: typeof BlockSubscription;
+  // InMemoryBlockStorage: typeof InMemoryBlockStorage;
   provider: HttpProvider;
-  dns: Dns;
-  wallet: Wallets;
-  payments: Payments;
-  lockupWallet: typeof LockupWallets;
+  // dns: Dns;
+  // wallet: Wallets;
+  // payments: Payments;
+  // lockupWallet: typeof LockupWallets;
 
   constructor(provider: HttpProvider) {
     this.version = version;
     this.utils = utils;
     this.Address = Address;
     this.boc = { Slice, Cell, BitString };
-    this.Contract = Contract;
-    this.BlockSubscription = BlockSubscription;
-    this.InMemoryBlockStorage = InMemoryBlockStorage;
+    // this.Contract = Contract;
+    // this.BlockSubscription = BlockSubscription;
+    // this.InMemoryBlockStorage = InMemoryBlockStorage;
 
     this.provider = provider ?? new HttpProvider();
-    this.dns = new Dns(this.provider);
-    this.wallet = new Wallets(this.provider);
-    this.payments = new Payments(this.provider);
-    this.lockupWallet = LockupWallets;
+    // this.dns = new Dns(this.provider);
+    // this.wallet = new Wallets(this.provider);
+    // this.payments = new Payments(this.provider);
+    // this.lockupWallet = LockupWallets;
   }
 
   /**
@@ -94,26 +93,25 @@ class TonWeb {
   static Address: typeof Address;
   static boc: { Slice: typeof Slice; Cell: typeof Cell; BitString: typeof BitString };
   static HttpProvider: typeof HttpProvider;
-  static Contract: typeof Contract;
-  static Wallets: typeof Wallets;
-  static LockupWallets: typeof LockupWallets;
-  static SubscriptionContract: typeof SubscriptionContract;
-  static BlockSubscription: typeof BlockSubscription;
-  static InMemoryBlockStorage: typeof InMemoryBlockStorage;
-  static ledger: {
-    TransportWebUSB: typeof TransportWebUSB;
-    TransportWebHID: typeof TransportWebHID;
-    BluetoothTransport: typeof BluetoothTransport;
-    AppTon: typeof AppTon;
-  };
-  static token: {
-    nft: typeof NFT;
-    ft: typeof JETTON;
-    jetton: typeof JETTON;
-  };
-  static HighloadWallets: typeof HighloadWallets;
-  static dns: typeof Dns;
-  static payments: typeof Payments;
+  // static Contract: typeof Contract;
+  // static Wallets: typeof Wallets;
+  // static LockupWallets: typeof LockupWallets;
+  // static SubscriptionContract: typeof SubscriptionContract;
+  // static BlockSubscription: typeof BlockSubscription;
+  // static InMemoryBlockStorage: typeof InMemoryBlockStorage;
+  // static ledger: {
+  //   TransportWebUSB: typeof TransportWebUSB;
+  //   TransportWebHID: typeof TransportWebHID;
+  //   BluetoothTransport: typeof BluetoothTransport;
+  // };
+  // static token: {
+  //   nft: typeof NFT;
+  //   ft: typeof JETTON;
+  //   jetton: typeof JETTON;
+  // };
+  // static HighloadWallets: typeof HighloadWallets;
+  // static dns: typeof Dns;
+  // static payments: typeof Payments;
 }
 
 TonWeb.version = version;
@@ -121,26 +119,25 @@ TonWeb.utils = utils;
 TonWeb.Address = Address;
 TonWeb.boc = { Slice, Cell, BitString };
 TonWeb.HttpProvider = HttpProvider;
-TonWeb.Contract = Contract;
-TonWeb.Wallets = Wallets;
-TonWeb.LockupWallets = LockupWallets;
-TonWeb.SubscriptionContract = SubscriptionContract;
-TonWeb.BlockSubscription = BlockSubscription;
-TonWeb.InMemoryBlockStorage = InMemoryBlockStorage;
-TonWeb.ledger = {
-  TransportWebUSB,
-  TransportWebHID,
-  BluetoothTransport,
-  AppTon,
-};
-TonWeb.token = {
-  nft: NFT,
-  ft: JETTON,
-  jetton: JETTON,
-};
-TonWeb.HighloadWallets = HighloadWallets;
-TonWeb.dns = Dns;
-TonWeb.dns.DnsCollection = DnsCollection;
-TonWeb.dns.DnsItem = DnsItem;
-TonWeb.payments = Payments;
-TonWeb.payments.PaymentChannel = PaymentChannel;
+// TonWeb.Contract = Contract;
+// TonWeb.Wallets = Wallets;
+// TonWeb.LockupWallets = LockupWallets;
+// TonWeb.SubscriptionContract = SubscriptionContract;
+// TonWeb.BlockSubscription = BlockSubscription;
+// TonWeb.InMemoryBlockStorage = InMemoryBlockStorage;
+// TonWeb.ledger = {
+//   TransportWebUSB,
+//   TransportWebHID,
+//   BluetoothTransport,
+// };
+// TonWeb.token = {
+//   nft: NFT,
+//   ft: JETTON,
+//   jetton: JETTON,
+// };
+// TonWeb.HighloadWallets = HighloadWallets;
+// TonWeb.dns = Dns;
+// TonWeb.dns.DnsCollection = DnsCollection;
+// TonWeb.dns.DnsItem = DnsItem;
+// TonWeb.payments = Payments;
+// TonWeb.payments.PaymentChannel = PaymentChannel;
