@@ -1,38 +1,12 @@
 import { BN } from "bn";
-import nacl from "tweetnacl";
-import {
-  crc16,
-  sha256,
-  crc32c,
-  newSeed,
-  bytesToHex,
-  hexToBytes,
-  newKeyPair,
-  concatBytes,
-  compareBytes,
-  stringToBytes,
-  bytesToBase64,
-  base64ToBytes,
-  base64toString,
-  stringToBase64,
-  keyPairFromSeed,
-  readNBytesUIntFromArray,
-} from "./Utils.ts";
-
 import Address from "./Address.ts";
-import AdnlAddress from "./AdnlAddress.ts";
-import StorageBagId from "./StorageBagId.ts";
 
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG?amount=1000000000
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG?amount=1000000000&text=data
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG?amount=1000000000&text=foo%3A%2F%2Fbar%2C%2Fbaz%3Famount%3D1%26text%3D%D1%80%D1%83
-/**
- * @param url {string}
- * @return {{address: string, amount?: string, text?: string}}
- * @throws if invalid url
- */
-function parseTransferUrl(url) {
+/** @throws if invalid url */
+export function parseTransferUrl(url: string): { address: string; amount?: string; text?: string } {
   const PREFIX = "ton://transfer/";
 
   if (!url.startsWith(PREFIX)) {
@@ -48,9 +22,7 @@ function parseTransferUrl(url) {
   if (!Address.isValid(address)) {
     throw new Error("invalid address format " + address);
   }
-  const result = {
-    address: address,
-  };
+  const result: { address: string; amount?: string; text?: string } = { address: address };
 
   const rest = arr[1];
   if (rest && rest.length) {
@@ -62,18 +34,15 @@ function parseTransferUrl(url) {
       const value = pair[1];
 
       if (key === "amount") {
-        if (result.amount) {
-          throw new Error("amount already set");
-        }
+        if (result.amount) throw new Error("amount already set");
+
         const bn = new BN(value);
-        if (bn.isNeg()) {
-          throw new Error("negative amount");
-        }
+        if (bn.isNeg()) throw new Error("negative amount");
+
         result.amount = value;
       } else if (key === "text") {
-        if (result.text) {
-          throw new Error("text already set");
-        }
+        if (result.text) throw new Error("text already set");
+
         result.text = decodeURIComponent(value);
       } else {
         throw new Error("unknown url var " + key);
@@ -83,53 +52,15 @@ function parseTransferUrl(url) {
   return result;
 }
 
-/**
- * @param address   {string}
- * @param amount?    {string} in nano
- * @param text?   {string}
- * @return {string}
- */
-function formatTransferUrl(address, amount, text) {
-  let url = "ton://transfer/" + address;
+export function formatTransferUrl(address: string, amount?: string, text?: string): string {
+  const url = "ton://transfer/" + address;
 
   const params = [];
 
-  if (amount) {
-    params.push("amount=" + amount);
-  }
-  if (text) {
-    params.push("text=" + encodeURIComponent(text));
-  }
+  if (amount) params.push("amount=" + amount);
+  if (text) params.push("text=" + encodeURIComponent(text));
 
   if (params.length === 0) return url;
 
   return url + "?" + params.join("&");
 }
-
-module.exports = {
-  Address,
-  AdnlAddress,
-  StorageBagId,
-  BN,
-  nacl,
-  sha256,
-  fromNano,
-  toNano,
-  bytesToHex,
-  hexToBytes,
-  stringToBytes,
-  crc32c,
-  crc16,
-  concatBytes,
-  bytesToBase64,
-  base64ToBytes,
-  base64toString,
-  stringToBase64,
-  compareBytes,
-  readNBytesUIntFromArray,
-  parseTransferUrl,
-  formatTransferUrl,
-  keyPairFromSeed,
-  newKeyPair,
-  newSeed,
-};
