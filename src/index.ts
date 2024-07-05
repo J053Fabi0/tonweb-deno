@@ -21,7 +21,7 @@ import HttpProvider from "./providers/index.ts";
 // const BluetoothTransport = require("@ledgerhq/hw-transport-web-ble").default;
 // const { BlockSubscription, InMemoryBlockStorage } = require("./providers/blockSubscription");
 
-class TonWeb {
+export class TonWeb {
   version: string;
   utils: typeof utils;
   Address: typeof Address;
@@ -56,7 +56,7 @@ class TonWeb {
    * @param txhash in HEX
    * @return array of transaction objects
    */
-  getTransactions(address: Address | string, limit = 20, lt?: number, txhash?: string, to_lt?: number) {
+  getTransactions(address: Address | string, limit = 20, lt?: number, txhash?: string, to_lt?: number): unknown {
     return this.provider.getTransactions(address.toString(), limit, lt, txhash, to_lt);
   }
 
@@ -70,7 +70,7 @@ class TonWeb {
   /**
    * Use this method to send serialized boc file: fully packed and serialized external message.
    */
-  sendBoc(bytes: Uint8Array) {
+  sendBoc(bytes: Uint8Array): unknown {
     return this.provider.sendBoc(utils.bytesToBase64(bytes));
   }
 
@@ -84,7 +84,7 @@ class TonWeb {
     address: Address | string,
     method: string | number,
     params: (["num", number] | ["cell", Cell] | ["slice", Slice])[] = []
-  ) {
+  ): unknown {
     return this.provider.call(address.toString(), method, params);
   }
 

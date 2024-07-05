@@ -234,14 +234,14 @@ export default class Cell {
   /**
    * @private
    */
-  async bocSerializationSize(cellsIndex: IndexHashmap) {
+  async bocSerializationSize(cellsIndex: IndexHashmap): Promise<number> {
     return (await this.serializeForBoc(cellsIndex)).length;
   }
 
   /**
    * @private
    */
-  treeWalk() {
+  treeWalk(): Promise<[TopologicalOrderArray, IndexHashmap]> {
     return treeWalk(this, [], {});
   }
 }

@@ -207,14 +207,14 @@ export function readNBytesUIntFromArray(n: number, ui8array: Uint8Array): number
   return res;
 }
 
-export function keyPairFromSeed(seed: Uint8Array) {
+export function keyPairFromSeed(seed: Uint8Array): nacl.SignKeyPair {
   return nacl.sign.keyPair.fromSeed(seed);
 }
 
-export function newKeyPair() {
+export function newKeyPair(): nacl.SignKeyPair {
   return nacl.sign.keyPair();
 }
 
-export function newSeed() {
+export function newSeed(): Uint8Array {
   return nacl.sign.keyPair().secretKey.slice(0, 32);
 }

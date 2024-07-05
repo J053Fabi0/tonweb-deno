@@ -1,5 +1,5 @@
 import { BN } from "bn";
-import Address from "../utils/Address.ts";
+import type Address from "../utils/Address.ts";
 import { bytesToHex } from "../utils/Utils.ts";
 
 export default class BitString {
@@ -32,36 +32,36 @@ export default class BitString {
   }
 
   /** @private */
-  checkRange(n: number) {
+  checkRange(n: number): void {
     if (n > this.length) throw Error("BitString overflow");
   }
 
   /** Set bit value to 1 at position `n` */
-  on(n: number) {
+  on(n: number): void {
     this.checkRange(n);
     this.array[(n / 8) | 0] |= 1 << (7 - (n % 8));
   }
 
   /** Set bit value to 0 at position `n` */
-  off(n: number) {
+  off(n: number): void {
     this.checkRange(n);
     this.array[(n / 8) | 0] &= ~(1 << (7 - (n % 8)));
   }
 
   /** Toggle bit value at position `n` */
-  toggle(n: number) {
+  toggle(n: number): void {
     this.checkRange(n);
     this.array[(n / 8) | 0] ^= 1 << (7 - (n % 8));
   }
 
   /** forEach every bit */
-  forEach(callback: (b: boolean) => void) {
+  forEach(callback: (b: boolean) => void): void {
     const max = this.cursor;
     for (let x = 0; x < max; x++) callback(this.get(x));
   }
 
   /** Write bit and increase cursor */
-  writeBit(b: boolean | number) {
+  writeBit(b: boolean | number): void {
     if (b && +b > 0) {
       this.on(this.cursor);
     } else {
@@ -70,14 +70,14 @@ export default class BitString {
     this.cursor = this.cursor + 1;
   }
 
-  writeBitArray(ba: (boolean | number)[]) {
+  writeBitArray(ba: (boolean | number)[]): void {
     for (let i = 0; i < ba.length; i++) {
       this.writeBit(ba[i]);
     }
   }
 
   /** Write unsigned int */
-  writeUint(number: number | BN, bitLength: number) {
+  writeUint(number: number | BN, bitLength: number): void {
     if (typeof number === "number" && isNaN(number)) throw new Error("writeUint: value is NaN");
     if (number === null) throw new Error("writeUint: value is null");
     if (number === undefined) throw new Error("writeUint: value is undefined");
@@ -95,7 +95,7 @@ export default class BitString {
   /**
    * Write signed int
    * @param bitLength size of int in bits */
-  writeInt(number: number | BN, bitLength: number) {
+  writeInt(number: number | BN, bitLength: number): void {
     if (typeof number === "number" && isNaN(number)) throw new Error("writeInt: value is NaN");
     if (number === null) throw new Error("writeInt: value is null");
     if (number === undefined) throw new Error("writeInt: value is undefined");
@@ -128,14 +128,14 @@ export default class BitString {
   /**
    * Write unsigned 8-bit int
    */
-  writeUint8(ui8: number) {
+  writeUint8(ui8: number): void {
     this.writeUint(ui8, 8);
   }
 
   /**
    * Write array of unsigned 8-bit ints
    */
-  writeBytes(ui8: Uint8Array) {
+  writeBytes(ui8: Uint8Array): void {
     for (let i = 0; i < ui8.length; i++) {
       this.writeUint8(ui8[i]);
     }
@@ -144,14 +144,14 @@ export default class BitString {
   /**
    * Write UTF-8 string
    */
-  writeString(value: string) {
+  writeString(value: string): void {
     this.writeBytes(new TextEncoder().encode(value));
   }
 
   /**
    * @param amount in nanograms
    */
-  writeGrams(amount: number | BN) {
+  writeGrams(amount: number | BN): void {
     if (amount == 0) {
       this.writeUint(0, 4);
     } else {
@@ -165,7 +165,7 @@ export default class BitString {
   /**
    * @param amount in nanotons
    */
-  writeCoins(amount: number | BN) {
+  writeCoins(amount: number | BN): void {
     this.writeGrams(amount);
   }
 
@@ -175,7 +175,7 @@ export default class BitString {
   /**
    * @param address {Address | null}
    */
-  writeAddress(address: Address | null) {
+  writeAddress(address: Address | null): void {
     if (address == null) {
       this.writeUint(0, 2);
     } else {
@@ -189,13 +189,13 @@ export default class BitString {
   /**
    * write another BitString to this BitString
    */
-  writeBitString(anotherBitString: BitString) {
+  writeBitString(anotherBitString: BitString): void {
     anotherBitString.forEach((x) => {
       this.writeBit(x);
     });
   }
 
-  clone() {
+  clone(): BitString {
     const result = new BitString(0);
     result.array = this.array.slice(0);
     result.length = this.length;

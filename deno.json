@@ -1,6 +1,7 @@
 {
   "name": "@josefabio/tonweb",
   "version": "1.0.0",
+  "exports": "./src/index.ts",
   "tasks": {
     "run:molt": "deno run -A https://deno.land/x/molt/cli.ts",
     "update_deps": "deno task -q run:molt ./**/*.ts --write"

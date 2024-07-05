@@ -1,7 +1,7 @@
 import Cell from "../boc/Cell.ts";
-import Slice from "../boc/Slice.ts";
+import type Slice from "../boc/Slice.ts";
 import { base64ToBytes } from "../utils/Utils.ts";
-import HttpProviderUtils from "./HttpProviderUtils.ts";
+import HttpProviderUtils, { type ParsedObject } from "./HttpProviderUtils.ts";
 
 const SHARD_ID_ALL = "-9223372036854775808"; // 0x8000000000000000
 
@@ -45,21 +45,21 @@ export default class HttpProvider {
   /**
    * Use this method to get information about address: balance, code, data, last_transaction_id.
    */
-  getAddressInfo(address: string) {
+  getAddressInfo(address: string): unknown {
     return this.send("getAddressInformation", { address: address });
   }
 
   /**
    * Similar to previous one but tries to parse additional information for known contract types. This method is based on generic.getAccountState thus number of recognizable contracts may grow. For wallets we recommend to use getWalletInformation.
    */
-  getExtendedAddressInfo(address: string) {
+  getExtendedAddressInfo(address: string): unknown {
     return this.send("getExtendedAddressInformation", { address: address });
   }
 
   /**
    * Use this method to retrieve wallet information, this method parse contract state and currently supports more wallet types than getExtendedAddressInformation: simple wallet, stadart wallet and v3 wallet.
    */
-  getWalletInfo(address: string) {
+  getWalletInfo(address: string): unknown {
     return this.send("getWalletInformation", { address: address });
   }
 
@@ -74,7 +74,7 @@ export default class HttpProvider {
     hash?: string,
     to_lt?: number | string,
     archival?: boolean
-  ) {
+  ): unknown {
     return this.send("getTransactions", { address, limit, lt, hash, to_lt, archival });
   }
 
@@ -89,7 +89,7 @@ export default class HttpProvider {
    * Use this method to send serialized boc file: fully packed and serialized external message.
    * @param base64 base64 of boc bytes Cell.toBoc
    */
-  sendBoc(base64: string) {
+  sendBoc(base64: string): unknown {
     return this.send("sendBoc", { boc: base64 });
   }
 
@@ -98,7 +98,7 @@ export default class HttpProvider {
    * Send external message
    * @param query object as described https://toncenter.com/api/test/v2/#sendQuerySimple
    */
-  sendQuery(query: unknown) {
+  sendQuery(query: unknown): unknown {
     return this.send("sendQuerySimple", query);
   }
 
@@ -106,7 +106,7 @@ export default class HttpProvider {
    * @param query object as described https://toncenter.com/api/test/v2/#estimateFee
    * @return fees object
    */
-  getEstimateFee(query: unknown) {
+  getEstimateFee(query: unknown): unknown {
     return this.send("estimateFee", query);
   }
 
@@ -121,7 +121,7 @@ export default class HttpProvider {
     address: string,
     method: string | number,
     params: (["num", number] | ["cell", Cell] | ["slice", Slice])[] = []
-  ) {
+  ): unknown {
     return this.send("runGetMethod", { address: address, method: method, stack: params });
   }
 
@@ -135,12 +135,13 @@ export default class HttpProvider {
     address: string,
     method: string | number,
     params: (["num", number] | ["cell", Cell] | ["slice", Slice])[] = []
-  ) {
+  ): Promise<ParsedObject> {
     const result = await this.send("runGetMethod", {
       address: address,
       method: method,
       stack: params,
     });
+    if (typeof result !== "object" || result === null) throw new Error("runGetMethod expected object");
     return HttpProviderUtils.parseResponse(result);
   }
 
@@ -176,14 +177,14 @@ export default class HttpProvider {
   /**
    * Returns ID's of last and init block of masterchain
    */
-  getMasterchainInfo() {
+  getMasterchainInfo(): unknown {
     return this.send("getMasterchainInfo", {});
   }
 
   /**
    * Returns ID's of shardchain blocks included in this masterchain block
    */
-  getBlockShards(masterchainBlockNumber: number) {
+  getBlockShards(masterchainBlockNumber: number): unknown {
     return this.send("shards", { seqno: masterchainBlockNumber });
   }
 
@@ -199,7 +200,7 @@ export default class HttpProvider {
     limit?: number,
     afterLt?: number | string,
     addressHash?: string
-  ) {
+  ): unknown {
     return this.send("getBlockTransactions", {
       count: limit,
       shard: shardId,
@@ -220,14 +221,14 @@ export default class HttpProvider {
     limit: number,
     afterLt: number | string,
     addressHash: string
-  ) {
+  ): unknown {
     return this.getBlockTransactions(-1, SHARD_ID_ALL, masterchainBlockNumber, limit, afterLt, addressHash);
   }
 
   /**
    * Returns block header and his previous blocks ID's
    */
-  getBlockHeader(workchain: number, shardId: string, shardBlockNumber: number) {
+  getBlockHeader(workchain: number, shardId: string, shardBlockNumber: number): unknown {
     return this.send("getBlockHeader", {
       workchain: workchain,
       shard: shardId,
@@ -238,7 +239,7 @@ export default class HttpProvider {
   /**
    * Returns masterchain block header and his previous block ID
    */
-  getMasterchainBlockHeader(masterchainBlockNumber: number) {
+  getMasterchainBlockHeader(masterchainBlockNumber: number): unknown {
     return this.getBlockHeader(-1, SHARD_ID_ALL, masterchainBlockNumber);
   }
 }

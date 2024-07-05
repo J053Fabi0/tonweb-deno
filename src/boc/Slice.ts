@@ -11,7 +11,7 @@ export default class Slice {
   length: number;
   readCursor: number;
   refs: Slice[];
-  refCursor;
+  refCursor: number;
 
   /**
    * @param length length in bits
@@ -118,7 +118,7 @@ export default class Slice {
     return this.loadVarUint(16);
   }
 
-  loadAddress() {
+  loadAddress(): Address | null {
     const b = this.loadUint(2);
     if (b.toNumber() === 0) return null; // null address
     if (b.toNumber() !== 2) throw new Error("unsupported address type");
