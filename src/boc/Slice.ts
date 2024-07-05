@@ -119,10 +119,10 @@ export default class Slice {
   }
 
   loadAddress(): Address | null {
-    const b = this.loadUint(2);
-    if (b.toNumber() === 0) return null; // null address
-    if (b.toNumber() !== 2) throw new Error("unsupported address type");
-    if (this.loadBit()) throw new Error("unsupported address type");
+    const b: number = this.loadUint(2).toNumber();
+    if (b === 0) return null; // null address
+    if (b !== 2) throw new Error("unsupported address type " + b);
+    if (this.loadBit()) throw new Error("unsupported address type " + b);
     const wc = this.loadInt(8).toNumber();
     const hashPart = this.loadBits(256);
     return new Address(wc + ":" + bytesToHex(hashPart));
