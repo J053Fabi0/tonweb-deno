@@ -1,27 +1,25 @@
-const {
-  BN,
-  nacl,
+import { BN } from "bn";
+import nacl from "tweetnacl";
+import {
+  crc16,
   sha256,
-  fromNano,
-  toNano,
+  crc32c,
+  newSeed,
   bytesToHex,
   hexToBytes,
-  stringToBytes,
-  crc32c,
-  crc16,
+  newKeyPair,
   concatBytes,
+  compareBytes,
+  stringToBytes,
   bytesToBase64,
   base64ToBytes,
   base64toString,
   stringToBase64,
-  compareBytes,
-  readNBytesUIntFromArray,
   keyPairFromSeed,
-  newKeyPair,
-  newSeed,
-} = require("./Utils");
+  readNBytesUIntFromArray,
+} from "./Utils.ts";
 
-const Address = require("./Address").default;
+import Address from "./Address.ts";
 const AdnlAddress = require("./AdnlAddress").default;
 const StorageBagId = require("./StorageBagId").default;
 
