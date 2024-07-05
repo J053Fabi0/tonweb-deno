@@ -5,6 +5,10 @@ export function sha256(bytes: BufferSource): Promise<ArrayBuffer> {
   return crypto.subtle.digest("SHA-256", bytes);
 }
 
+export function uint8ArrayToText(uint8Array: Uint8Array): string {
+  return new TextDecoder().decode(uint8Array);
+}
+
 // look up tables
 const to_hex_array: string[] = [];
 const to_byte_map: Record<string, number> = {};
@@ -27,9 +31,8 @@ export function bytesToHex(buffer: Uint8Array): string {
 export function hexToBytes(s: string): Uint8Array {
   s = s.toLowerCase();
   const length2 = s.length;
-  if (length2 % 2 !== 0) {
-    throw "hex string must have length a multiple of 2";
-  }
+  if (length2 % 2 !== 0) throw new Error("hex string must have length a multiple of 2");
+
   const length = length2 / 2;
   const result = new Uint8Array(length);
   for (let i = 0; i < length; i++) {
