@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "run:molt": "deno run -A https://deno.land/x/molt/cli.ts",
+    "update_deps": "deno task -q run:molt ./**/*.ts --write"
+  },
+  "imports": {
+    "@ledgerhq/hw-transport-web-ble": "npm:@ledgerhq/hw-transport-web-ble@^6.29.0",
+    "@ledgerhq/hw-transport-webhid": "npm:@ledgerhq/hw-transport-webhid@^6.29.0",
+    "@ledgerhq/hw-transport-webusb": "npm:@ledgerhq/hw-transport-webusb@^6.29.0",
+    "bn": "https://deno.land/x/bn_deno@1.0.0/lib/bn.js",
+    "ethjs-unit": "npm:ethjs-unit@^0.1.6",
+    "isomorphic-webcrypto": "npm:isomorphic-webcrypto@^2.3.8",
+    "node-fetch": "npm:node-fetch@^3.3.2",
+    "tweetnacl": "npm:tweetnacl@^1.0.3"
+  }
+}
