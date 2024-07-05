@@ -21,7 +21,7 @@ import {
 
 import Address from "./Address.ts";
 import AdnlAddress from "./AdnlAddress.ts";
-const StorageBagId = require("./StorageBagId").default;
+import StorageBagId from "./StorageBagId.ts";
 
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG
 // ton://transfer/EQA0i8-CdGnF_DhUHHf92R1ONH6sIA9vLZ_WLcCIhfBBXwtG?amount=1000000000
